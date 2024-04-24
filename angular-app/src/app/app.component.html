@@ -1,0 +1,67 @@
+<main class="main">
+  <div>
+    <div>
+      <h1>Weather Info</h1>
+    </div>
+    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+      <div>
+
+        <div>
+          <label for="lat">
+            Latitude
+          </label>
+          <input id="lat" type="text" formControlName="lat">
+        </div>
+
+        <div>
+          <label for="lon">
+            Longitude
+          </label>
+          <input id="lon" type="text" formControlName="lon">
+        </div>
+
+        <button class="button" type="submit">Hows the weather?</button>
+
+      </div>
+      <div class="city-info">
+        <h2>City Info</h2>
+        <div>
+          <div>
+            <p>City: {{ weatherSignal()?.result?.city?.name }}</p>
+            <p>Country: {{ weatherSignal()?.result?.city?.country }}</p>
+          </div>
+          <div>
+            <p>Coordinates:</p>
+            <p>Latitude: {{ weatherSignal()?.result?.city?.coord?.lat }} </p>
+            <p>Longitude: {{ weatherSignal()?.result?.city?.coord?.lon }}</p>
+          </div>
+          <div>
+            <p>Sunrise: {{ weatherSignal()?.result?.city?.sunrise | utcToLocaleTime:'shortTime'}} </p>
+            <p>Sunset: {{ weatherSignal()?.result?.city?.sunset | utcToLocaleTime:'shortTime'}} </p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h2>Daily Forecast</h2>
+        <div class="scroll">
+          <table>
+            <tr>
+              @for(item of weatherSignal()?.result?.list; track item){
+                <td>
+                  <div class="weatherContainer">
+                    <h1> {{item.dt_txt | date:'dd/MM HH:mm'}}</h1>
+                    <p class="temperature">{{item.main.temp}} K </p>
+                    <h1>{{ item.weather[0].main }}</h1>
+                    <p>{{ item.weather[0].description }}</p>
+                  </div>
+                </td>
+              }
+            </tr>
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
+
+<router-outlet />
